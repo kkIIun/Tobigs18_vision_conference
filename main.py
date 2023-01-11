@@ -142,7 +142,6 @@ def main(args):
     logger.info('local_rank: {}'.format(args.local_rank))
     logger.info("args: " + str(args) + '\n')
 
-
     if args.frozen_weights is not None:
         assert args.masks, "Frozen training is meant for segmentation only"
     print(args)
@@ -220,6 +219,7 @@ def main(args):
     # if os.path.exists(os.path.join(args.output_dir, 'checkpoint.pth')):
     #     args.resume = os.path.join(args.output_dir, 'checkpoint.pth')
     
+    print(f"resume: {args.resume}")
     if args.resume:
         if args.resume.startswith('https'):
             checkpoint = torch.hub.load_state_dict_from_url(
@@ -263,16 +263,16 @@ def main(args):
             else:
                 del ema_m
                 ema_m = ModelEma(model, args.ema_decay)  
-
-        # grad freeze(leekijung)
-        # grad_false_list = ['backbone.0.body.layer1']
-        # for name, param in model.named_parameters():
-        #   if 'backbone' in name:
-        #     if any(word in name for word in grad_false_list):
-        #       param.requires_grad = False
-        #     else:
-        #       param.requires_grad = True
-        #     print(f"{name}:{param.requires_grad}")
+        
+        # grad freeze
+        for name, param in model.named_parameters():
+          if 'backbone' in name:
+            param.requires_grad = True
+            # if any(word in name for word in grad_false_list):
+            #   param.requires_grad = False
+            # else:
+            #   param.requires_grad = True
+          print(f"{name}:{param.requires_grad}")
     
     if args.eval:
         os.environ['EVAL_FLAG'] = 'TRUE'
@@ -286,7 +286,8 @@ def main(args):
             with (output_dir / "log.txt").open("a") as f:
                 f.write(json.dumps(log_stats) + "\n")
         return
-    
+        
+    print(model)
     print("Start training")
     start_time = time.time()
     best_map_holder = BestMetricHolder(use_ema=args.use_ema)
