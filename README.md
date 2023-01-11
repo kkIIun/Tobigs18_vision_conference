@@ -20,7 +20,9 @@ cd ../../..
 
 ## Train
 ```
-!bash scripts/DINO_train_toreta.sh "your toreta dataset path" "your pretrained model path"
+bash scripts/DINO_train_toreta.sh "your toreta dataset path" "your pretrained model path"
 
-ex) !bash scripts/DINO_train_toreta.sh "/content/drive/MyDrive/DINO/toreta" "/content/drive/MyDrive/DINO/checkpoint0033_4scale.pth"
+ex) bash scripts/DINO_train_toreta.sh "/content/drive/MyDrive/DINO/toreta" "/content/drive/MyDrive/DINO/checkpoint0033_4scale.pth"
 ```
+
+* you can modify hyper-parmeter(lr, batch_size, weight_decay, etc.) in DINO_4scale_2class.py
