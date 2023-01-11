@@ -10,7 +10,7 @@
 ## Installation
 1. pip install pytorch torchvision
 2. pip install -r requirements.txt
-3. pip install -r requirements_bytetrack.txt ( if you inference tracking )
+3. pip install -r requirements_bytetrack.txt ( if you want to infer tracking )
 4. Compiling CUDA operators
 ```
 cd models/dino/ops
